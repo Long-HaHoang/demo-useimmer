@@ -32,9 +32,10 @@ export default function Home() {
   };
 
   const handleImmerProjectPrice = () => {
-    updateImmerProjects((draft) => {
+    const newImmerProjects = (draft) => {
       draft[0].items[0] = { ...draft[0].items[0], price: 555 }; // Immer change
-    });
+    };
+    updateImmerProjects(newImmerProjects);
   };
 
   return (
@@ -46,15 +47,21 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <StyledMain>
-        <h1>Hello, World!</h1>
-        <p>StateProject Price: {stateProjects[0].items[0].price}</p>
-        <button type="button" onClick={handleStateProjectPrice}>
-          Change State Price
-        </button>
-        <p>ImmerProject Price: {immerProjects[0].items[0].price}</p>
-        <button type="button" onClick={handleImmerProjectPrice}>
-          Change Immer Price
-        </button>
+        <h1>useState vs useImmer</h1>
+        <StyledDiv>
+          <h2>useState Project Price: </h2>
+          <p>{stateProjects[0].items[0].price}</p>
+          <button type="button" onClick={handleStateProjectPrice}>
+            Change State Price
+          </button>
+        </StyledDiv>
+        <StyledDiv>
+          <h2>useImmer Project Price: </h2>
+          <p>{immerProjects[0].items[0].price}</p>
+          <button type="button" onClick={handleImmerProjectPrice}>
+            Change Immer Price
+          </button>
+        </StyledDiv>
       </StyledMain>
     </>
   );
@@ -65,4 +72,30 @@ const StyledMain = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+`;
+
+const StyledDiv = styled.div`
+  border: solid white;
+  width: 80%;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    color: lightgoldenrodyellow;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  button {
+    width: 30%;
+  }
 `;
