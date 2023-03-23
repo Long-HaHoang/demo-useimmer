@@ -1,6 +1,42 @@
 import Head from "next/head";
+import styled from "styled-components";
+import { useState } from "react";
+import { useImmer } from "use-immer";
+import { projects } from "@/lib/initialValues";
 
 export default function Home() {
+  const [stateProjects, setStateProjects] = useState(projects);
+  const [immerProjects, updateImmerProjects] = useImmer(projects);
+
+  const handleStateProjectPrice = () => {
+    const newStateProjects = stateProjects.map((stateProject, index) => {
+      if (index === 0) {
+        return {
+          ...stateProject,
+          items: stateProject.items.map((item, index) => {
+            if (index === 0) {
+              return {
+                ...item,
+                price: 555, // Here is the actual change
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      } else {
+        return stateProject;
+      }
+    });
+    setStateProjects(newStateProjects);
+  };
+
+  const handleImmerProjectPrice = () => {
+    updateImmerProjects((draft) => {
+      draft[0].items[0] = { ...draft[0].items[0], price: 555 }; // Immer change
+    });
+  };
+
   return (
     <>
       <Head>
@@ -9,9 +45,24 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <StyledMain>
         <h1>Hello, World!</h1>
-      </main>
+        <p>StateProject Price: {stateProjects[0].items[0].price}</p>
+        <button type="button" onClick={handleStateProjectPrice}>
+          Change State Price
+        </button>
+        <p>ImmerProject Price: {immerProjects[0].items[0].price}</p>
+        <button type="button" onClick={handleImmerProjectPrice}>
+          Change Immer Price
+        </button>
+      </StyledMain>
     </>
   );
 }
+
+const StyledMain = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
